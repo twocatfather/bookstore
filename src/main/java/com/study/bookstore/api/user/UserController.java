@@ -1,14 +1,15 @@
 package com.study.bookstore.api.user;
 
 import com.study.bookstore.api.user.dto.request.UserRequest;
+import com.study.bookstore.api.user.dto.request.UserUpdateRequest;
+import com.study.bookstore.api.user.dto.response.UserResponse;
+import com.study.bookstore.global.jwt.CustomUserDetails;
 import com.study.bookstore.service.user.facade.UserFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,6 +33,13 @@ public class UserController {
      *  parameter -> 직접적으로 userid 를 받아서는 안됩니다. 시큐리티세팅했습니다.
      *  userid 기준으로  해당 유저를 찾아내는 겁니다.
      */
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+            ) {
+        return ResponseEntity.ok(userFacade.getUserById(userDetails.getUser().getId()));
+
+    }
 
     /**
      *  api 주소는 "/me"
@@ -42,6 +50,14 @@ public class UserController {
      *  body -> UserUpdateRequest
      *  userid 기준으로  해당 유저를 찾아내는 겁니다.
      */
+    @PutMapping("/me")
+    public ResponseEntity<UserResponse> updateCurrentUser(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @Valid @RequestBody UserUpdateRequest request
+            ) {
+        UserResponse response = userFacade.updateUser(userDetails.getUser().getId(), request);
+        return ResponseEntity.ok(response);
+    }
 
     /**
      *  api 주소는 "/me"
@@ -51,6 +67,13 @@ public class UserController {
      *  parameter -> 직접적으로 userid 를 받아서는 안됩니다. 시큐리티세팅했습니다.
      *  userid 기준으로  해당 유저를 찾아내는 겁니다.
      */
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteCurrentUser(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+            ) {
+        userFacade.deleteUser(userDetails.getUser().getId());
+        return ResponseEntity.noContent().build();
+    }
 
     /**
      *  api 주소는 "/{userId}"
@@ -60,4 +83,11 @@ public class UserController {
      *  parameter -> 직접적으로 userid 를 받는 녀석
      *  userid 기준으로  해당 유저를 찾아내는 겁니다.
      */
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResponse> getUser(
+            @PathVariable Long userId
+    ) {
+        UserResponse response = userFacade.getUserById(userId);
+        return ResponseEntity.ok(response);
+    }
 }
