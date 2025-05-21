@@ -51,4 +51,8 @@ public class CustomUserDetails implements UserDetails {
         return !user.isDeleted();
     }
 
+    public Long getUserId() {
+        return user.getId();
+    }
+
 }

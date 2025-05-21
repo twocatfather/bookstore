@@ -1,5 +1,7 @@
 package com.study.bookstore.infrastructure.review.entity;
 
+import com.study.bookstore.domain.review.Review;
+import com.study.bookstore.global.common.BaseEntity;
 import com.study.bookstore.infrastructure.book.entity.BookJpaEntity;
 import com.study.bookstore.infrastructure.user.entity.UserJpaEntity;
 import jakarta.persistence.*;
@@ -8,12 +10,12 @@ import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @Entity
-@Table(name = "reviews")
+@Table(name = "review")
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ReviewJpaEntity {
+public class ReviewJpaEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,6 +40,14 @@ public class ReviewJpaEntity {
     }
 
     // ReviewJpaEntity from
+    public static ReviewJpaEntity from(Review review, UserJpaEntity user, BookJpaEntity book) {
+        return ReviewJpaEntity.builder()
+                .content(review.getContent())
+                .rating(review.getRating())
+                .user(user)
+                .book(book)
+                .build();
+    }
 
     public void updateContent(String content) {
         this.content = content;

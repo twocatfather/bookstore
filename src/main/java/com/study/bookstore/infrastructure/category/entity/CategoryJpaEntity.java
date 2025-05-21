@@ -1,6 +1,7 @@
 package com.study.bookstore.infrastructure.category.entity;
 
 import com.study.bookstore.domain.book.Category;
+import com.study.bookstore.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "category")
-public class CategoryJpaEntity {
+public class CategoryJpaEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,0 +1,3 @@
+CREATE USER IF NOT EXISTS 'book_user'@'%' IDENTIFIED BY 'bookpass';
+GRANT ALL PRIVILEGES ON book_db.* TO 'book_user'@'%';
+FLUSH PRIVILEGES;
