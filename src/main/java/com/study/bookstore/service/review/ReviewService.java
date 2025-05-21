@@ -76,7 +76,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public Page<ReviewServiceResponse> getReviewsByBook(Long bookId, Pageable pageable) {
-        Page<ReviewJpaEntity> entities = reviewJpaRepository.findByBookIdAndIsDeletedFalse(bookId, pageable);
+        Page<ReviewJpaEntity> entities = reviewJpaRepository.findByBook_IdAndIsDeletedFalse(bookId, pageable);
         return entities.map(entity -> convertToResponse(entity, entity.getUser().getUsername()));
     }
 

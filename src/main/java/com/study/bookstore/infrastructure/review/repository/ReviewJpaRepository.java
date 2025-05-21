@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ReviewJpaRepository extends JpaRepository<ReviewJpaEntity, Long>, ReviewQueryRepository {
 
     @EntityGraph(attributePaths = {"user", "book"})
-    Page<ReviewJpaEntity> findByBookIdAndIsDeletedFalse(Long bookId, Pageable pageable);
+    Page<ReviewJpaEntity> findByBook_IdAndIsDeletedFalse(Long bookId, Pageable pageable);
 
     List<ReviewJpaEntity> findByBookIdAndIsDeletedFalse(Long bookId);
 
